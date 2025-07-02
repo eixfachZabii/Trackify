@@ -2,23 +2,60 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Components
-import Navbar from './components/Navbar';
-import Dashboard from './components/Dashboard';
-import DataUpload from './components/DataUpload';
-import PhotoGallery from './components/PhotoGallery';
-import Analytics from './components/Analytics';
-import ProgressView from './components/ProgressView';
-import GoalTracker from './components/GoalTracker';
-import Reports from './components/Reports';
-import LoadingSpinner from './components/LoadingSpinner';
-import ErrorBoundary from './components/ErrorBoundary';
+// Import existing components
+import Dashboard from './components/Dashboard/Dashboard';
 
-// Services
-import { apiService } from './services/apiService';
+// Import services and context
+import { apiService } from './services/apiService.jsx';
+import { AppProvider } from './context/AppContext.jsx';
 
-// Context
-import { AppProvider } from './context/AppContext';
+// Simple components to replace missing ones temporarily
+import Navbar from './components/Navbar/Navbar.jsx';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner.jsx';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx';
+
+// Placeholder components for now
+const DataUpload = () => (
+  <div className="page-container">
+    <h1>Data Upload</h1>
+    <p>Upload your body composition data here. (Coming soon)</p>
+  </div>
+);
+
+const PhotoGallery = () => (
+  <div className="page-container">
+    <h1>Photo Gallery</h1>
+    <p>View your progress photos here. (Coming soon)</p>
+  </div>
+);
+
+const Analytics = () => (
+  <div className="page-container">
+    <h1>Analytics</h1>
+    <p>View detailed analytics of your progress. (Coming soon)</p>
+  </div>
+);
+
+const ProgressView = () => (
+  <div className="page-container">
+    <h1>Progress View</h1>
+    <p>Track your overall progress. (Coming soon)</p>
+  </div>
+);
+
+const GoalTracker = () => (
+  <div className="page-container">
+    <h1>Goal Tracker</h1>
+    <p>Set and track your fitness goals. (Coming soon)</p>
+  </div>
+);
+
+const Reports = () => (
+  <div className="page-container">
+    <h1>Reports</h1>
+    <p>Generate progress reports. (Coming soon)</p>
+  </div>
+);
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -65,7 +102,7 @@ function App() {
             <h3>Troubleshooting:</h3>
             <ul>
               <li>Make sure the Python backend is running on port 8000</li>
-              <li>Run: <code>cd backend && python main.py</code></li>
+              <li>Run: <code>cd server && python main.py</code></li>
               <li>Check that no firewall is blocking the connection</li>
             </ul>
           </div>

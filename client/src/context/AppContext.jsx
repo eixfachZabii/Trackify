@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { apiService } from '../services/apiService';
+import { apiService } from '../services/apiService.jsx';
 
 // Initial state
 const initialState = {

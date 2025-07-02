@@ -6,6 +6,7 @@ from scipy import stats
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 import json
+import os
 
 
 class AnalyticsEngine:
@@ -23,9 +24,8 @@ class AnalyticsEngine:
     def get_metrics_summary(self) -> Dict[str, Any]:
         """Get comprehensive metrics summary"""
         try:
-            from ..data_processor.data_processor import DataProcessor
             if not self.data_processor:
-                self.data_processor = DataProcessor()
+                return {"error": "Data processor not initialized"}
 
             data = self.data_processor.get_body_composition_data()
             if not data:
@@ -93,9 +93,8 @@ class AnalyticsEngine:
     ) -> Dict[str, Any]:
         """Comprehensive trend analysis for specified metrics and period"""
         try:
-            from ..data_processor.data_processor import DataProcessor
             if not self.data_processor:
-                self.data_processor = DataProcessor()
+                return {"error": "Data processor not initialized"}
 
             data = self.data_processor.get_body_composition_data(start_date, end_date)
             if len(data) < 2:
@@ -137,9 +136,8 @@ class AnalyticsEngine:
     def get_metric_correlations(self) -> Dict[str, Any]:
         """Calculate correlations between different metrics"""
         try:
-            from ..data_processor import DataProcessor
             if not self.data_processor:
-                self.data_processor = DataProcessor()
+                return {"error": "Data processor not initialized"}
 
             data = self.data_processor.get_body_composition_data()
             if not data:
@@ -190,9 +188,8 @@ class AnalyticsEngine:
     def get_progress_predictions(self, days_ahead: int = 30) -> Dict[str, Any]:
         """Predict progress for specified number of days"""
         try:
-            from ..data_processor import DataProcessor
             if not self.data_processor:
-                self.data_processor = DataProcessor()
+                return {"error": "Data processor not initialized"}
 
             data = self.data_processor.get_body_composition_data(limit=90)  # Use last 90 days
             if len(data) < 10:
@@ -226,9 +223,8 @@ class AnalyticsEngine:
     def check_goal_progress(self, target_weight: float, target_date: str) -> Dict[str, Any]:
         """Check progress towards specific weight goal"""
         try:
-            from ..data_processor import DataProcessor
             if not self.data_processor:
-                self.data_processor = DataProcessor()
+                return {"error": "Data processor not initialized"}
 
             latest_data = self.data_processor.get_latest_measurement()
             if not latest_data:
@@ -291,9 +287,8 @@ class AnalyticsEngine:
         """Generate comprehensive progress report"""
         try:
             # Get body composition data
-            from ..data_processor import DataProcessor
             if not self.data_processor:
-                self.data_processor = DataProcessor()
+                return {"error": "Data processor not initialized"}
 
             data = self.data_processor.get_body_composition_data(start_date, end_date)
 
@@ -306,10 +301,7 @@ class AnalyticsEngine:
 
             # Get photos if requested
             photos = []
-            if include_photos:
-                from ..photo_manager import PhotoManager
-                if not self.photo_manager:
-                    self.photo_manager = PhotoManager()
+            if include_photos and self.photo_manager:
                 photos = self.photo_manager.get_photos(start_date, end_date)
 
             report = {

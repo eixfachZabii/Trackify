@@ -48,6 +48,9 @@ data_processor = DataProcessor()
 photo_manager = PhotoManager()
 analytics_engine = AnalyticsEngine()
 
+# Set up dependencies for analytics engine to avoid circular imports
+analytics_engine.set_dependencies(data_processor, photo_manager)
+
 
 @app.get("/")
 async def root():
@@ -137,11 +140,14 @@ async def upload_progress_photo(
 async def get_progress_photos(
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
-        tags: Optional[str] = None
+        tags: Optional[str] = None,
+        limit: Optional[int] = None
 ):
     """Get progress photos with optional filtering"""
     try:
         photos = photo_manager.get_photos(start_date, end_date, tags)
+        if limit:
+            photos = photos[:limit]
         return photos
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -239,4 +245,4 @@ async def generate_progress_report(
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

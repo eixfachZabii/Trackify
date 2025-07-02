@@ -1,7 +1,7 @@
 // API Service for Trackify
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-class APIService {
+class ApiService {
   constructor() {
     this.baseURL = API_BASE_URL;
   }
@@ -307,10 +307,10 @@ class APIService {
 }
 
 // Create and export singleton instance
-export const apiService = new APIService();
+export const apiService = new ApiService();
 
 // Export the class for testing
-export { APIService };
+export { ApiService };
 
 // Export utility functions
 export const dateUtils = {

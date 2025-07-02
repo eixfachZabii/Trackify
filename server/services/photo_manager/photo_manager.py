@@ -300,34 +300,33 @@ class PhotoManager:
         except Exception as e:
             raise Exception(f"Error creating photo timeline: {str(e)}")
 
-    def get_photos_for_date_range(self, start_date: str, end_date: str) -> List[Dict[str, Any]]:
+    def get_photos_for_date_range(self, start_date: str, end_date: str, data_processor=None) -> List[Dict[str, Any]]:
         """Get photos within a specific date range for correlation with body data"""
         try:
             photos = self.get_photos(start_date, end_date)
 
             # Add distance from measurement dates for better correlation
-            from services.data_processor import DataProcessor
-            data_processor = DataProcessor()
-            measurements = data_processor.get_body_composition_data(start_date, end_date)
+            if data_processor:
+                measurements = data_processor.get_body_composition_data(start_date, end_date)
 
-            for photo in photos:
-                photo_date = datetime.strptime(photo['date'], '%Y-%m-%d %H:%M:%S')
+                for photo in photos:
+                    photo_date = datetime.strptime(photo['date'], '%Y-%m-%d %H:%M:%S')
 
-                # Find closest measurement
-                closest_measurement = None
-                min_diff = None
+                    # Find closest measurement
+                    closest_measurement = None
+                    min_diff = None
 
-                for measurement in measurements:
-                    measure_date = datetime.strptime(measurement['date'], '%Y-%m-%d %H:%M:%S')
-                    diff = abs((photo_date - measure_date).days)
+                    for measurement in measurements:
+                        measure_date = datetime.strptime(measurement['date'], '%Y-%m-%d %H:%M:%S')
+                        diff = abs((photo_date - measure_date).days)
 
-                    if min_diff is None or diff < min_diff:
-                        min_diff = diff
-                        closest_measurement = measurement
+                        if min_diff is None or diff < min_diff:
+                            min_diff = diff
+                            closest_measurement = measurement
 
-                if closest_measurement:
-                    photo['closest_measurement'] = closest_measurement
-                    photo['days_from_measurement'] = min_diff
+                    if closest_measurement:
+                        photo['closest_measurement'] = closest_measurement
+                        photo['days_from_measurement'] = min_diff
 
             return photos
 
