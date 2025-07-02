@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
+from typing import List, Optional, Dict, Any
+
+from pydantic import BaseModel, Field
 
 
 class BodyCompositionData(BaseModel):
@@ -216,8 +217,8 @@ class AppConfig(BaseModel):
 # Validation models
 class DateRange(BaseModel):
     """Model for date range validation"""
-    start_date: str = Field(..., regex=r'^\d{4}-\d{2}-\d{2}$', description="Start date YYYY-MM-DD")
-    end_date: str = Field(..., regex=r'^\d{4}-\d{2}-\d{2}$', description="End date YYYY-MM-DD")
+    start_date: str = Field(..., pattern=r'^\d{4}-\d{2}-\d{2}$', description="Start date YYYY-MM-DD")
+    end_date: str = Field(..., pattern=r'^\d{4}-\d{2}-\d{2}$', description="End date YYYY-MM-DD")
 
     def validate_date_range(self):
         """Validate that end_date is after start_date"""
